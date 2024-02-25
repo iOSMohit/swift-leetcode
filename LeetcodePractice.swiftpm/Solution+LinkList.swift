@@ -8,12 +8,61 @@
 import Foundation
 
 extension Solution {
-    final class ListNode {
-        var val: Int
-        var next: ListNode?
-        init() { self.val = 0; self.next = nil; }
-        init(_ val: Int) { self.val = val; self.next = nil; }
-        init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+    func solve() {
+        let list1 = ListNode(1)
+        list1.next = ListNode(2)
+        list1.next?.next = ListNode(4)
+        
+        let list2 = ListNode(1)
+        list2.next = ListNode(3)
+        list2.next?.next = ListNode(4)
+        
+        let newHead = mergeTwoLists(list1, list2)
+        print(newHead?.val)
+    }
+    
+    func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
+        if list1 == nil {
+            return list2
+        }
+        
+        if list2 == nil {
+            return list1
+        }
+        
+        
+        var ll = LinkedList()
+        var l1 = list1
+        var l2 = list2
+        
+        while(l1 != nil && l2 != nil) {
+            guard let lv1 = l1, let lv2 = l2 else {
+                continue
+            }
+            
+            if lv1.val < lv2.val {
+                ll.append(item: lv1.val)
+                
+                l1 = l1?.next
+            } else {
+                ll.append(item: lv2.val)
+                
+                l2 = l2?.next
+            }
+        }
+        
+        while(l1 != nil) {
+            ll.append(item: l1!.val)
+            l1 = l1?.next
+        }
+        
+        while(l2 != nil) {
+            ll.append(item: l2!.val)
+            
+            l2 = l2?.next
+        }
+        
+        return ll.head
     }
     
     func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
@@ -71,6 +120,23 @@ extension Solution {
         }
         
         return finalListHead
+    }
+    
+    
+    func hasCycle(_ head: ListNode?) -> Bool {
+        var firstPointer = head
+        var secondPointer = head?.next?.next
+        
+        while(secondPointer != nil || firstPointer != nil) {
+            if firstPointer === secondPointer {
+                return true
+            }
+            
+            firstPointer = firstPointer?.next
+            secondPointer = secondPointer?.next?.next
+        }
+        
+        return false
     }
 }
 

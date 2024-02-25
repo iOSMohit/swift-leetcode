@@ -8,7 +8,20 @@
 import Foundation
 
 extension Solution {
+//    func processURL() {
+//        let url = "https://www.lowes.com/l/your-recommendations?eventId=event-id&divId=based-on-your-purchase"
+//        guard let uRL = URL(string: url), "your-recommendations" == uRL.pathComponents.last else {
+//            return
+//        }
+//        print(uRL.pathComponents)
+//        print(uRL.path(percentEncoded: false))
+//    }
+    
 //    func solve() {
+//        let s = "PAYPALISHIRING"
+//        print(s.count/(5))
+        
+//        processURL()
 //        let heap = Heap([3, 9, 2, 1, 4, 5])
 //        print(lengthOfLastWord("   fly me   to   the moon  "))
         
@@ -37,35 +50,214 @@ extension Solution {
 //        print(isIsomorphic("foo", "bar"))
 //        print(isIsomorphic("paper", "title"))
 //        print(isIsomorphic("badc", "baba"))
+        
+//        print(wordPattern("abba", "dog dog dog dog"))
+//        print(wordPattern("aaa", "aa aa aa aa"))
+//        print(wordPattern("he", "unit"))
+        
+//        print(isHappy(19))
+//        print(isHappy(12))
+//        print(isHappy(7))
+//        print(isHappy(10042))
+        
+//        print(romanToInt("III"))
+//        print(romanToInt("LVIII"))
+//        print(romanToInt("MCMXCIV"))
+//        print(romanToInt("DCXXI"))
+        
+//        print(maxArea([1,8,6,2,5,4,8,3,7]))
+        
+//        print(plusOne([1,2,9,1]))
 //    }
-    /// tidle --> paper
-    /// https://leetcode.com/problems/isomorphic-strings/?envType=study-plan-v2&envId=top-interview-150
-    func isIsomorphic(_ s: String, _ t: String) -> Bool {
-        var dic = [String: String]()
-        let sArr = s.split(separator: "").map({ String($0) })
-        let tArr = t.split(separator: "").map({ String($0) })
+    
+    func plusOne(_ digits: [Int]) -> [Int] {
+        var mutableDigits = digits
+        var lastPointer = mutableDigits.count - 1
         
-        var sDic = [String: Int]()
-        var tDic = [String: Int]()
-        
-        var it = 0
-        while(it < sArr.count) {
-            sDic[sArr[it]] = (sDic[sArr[it]] ?? 0) + 1
-            tDic[tArr[it]] = (tDic[tArr[it]] ?? 0) + 1
-
-            it += 1
+        var carry = 1
+        while(lastPointer >= 0) {
+            let newResult = mutableDigits[lastPointer] + carry
+            print(newResult, mutableDigits)
+            if newResult > 9 {
+                mutableDigits[lastPointer] = 0
+                carry = 1
+            } else {
+                mutableDigits[lastPointer] = newResult
+                carry = 0
+            }
+            
+            lastPointer -= 1
         }
         
-        let sCount = sDic.values.map({ $0 }).sorted()
-        let tCount = tDic.values.map({ $0 }).sorted()
+        if carry != 0 {
+            mutableDigits.insert(1, at: 0)
+        }
         
-        for it in (0..<sCount.count) {
-            guard sCount[it] == tCount[it] else {
-                return false
+        return mutableDigits
+    }
+    /// https://leetcode.com/problems/container-with-most-water
+    func maxArea(_ height: [Int]) -> Int {
+        var leftPointer = 0
+        var rightPointer = height.count - 1
+        
+        var maxArea = 0
+        while(leftPointer < rightPointer) {
+            let leftHeight = height[leftPointer]
+            let rightHeight = height[rightPointer]
+            
+            let currentArea = (rightPointer - leftPointer) * min(leftHeight, rightHeight)
+            maxArea = max(maxArea, currentArea)
+            
+            if leftHeight < rightHeight {
+                leftPointer += 1
+            } else {
+                rightPointer -= 1
+            }
+        }
+        
+        return maxArea
+    }
+    
+    func romanToInt(_ s: String) -> Int {
+        let str = Array(s)
+        let dic: [String: Int] = ["I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000, "IV": 4, "IX": 9, "XL": 40, "XC": 90, "CD": 400, "CM": 900]
+        
+        let isSpecial: (String) -> Bool = { str -> Bool in
+            (str == "I" || str == "X" || str == "C")
+        }
+        
+        let isSpecialTwo: (String) -> Bool = { str -> Bool in
+            (str == "V" || str == "X" || str == "L" || str == "C" || str == "D" || str == "M")
+        }
+        
+        var number = 0
+        for (index, char) in str.enumerated() {
+            let charStr = String(char)
+            
+            if isSpecialTwo(charStr) && index > 0 && isSpecial(String(str[index-1])) {
+                let previousStr = String(str[index-1])
+                if let value = dic[previousStr+charStr] {
+                    number -= dic[previousStr]!
+                    number += value
+                    continue
+                }
+            }
+            
+            if let num = dic[charStr] {
+                number += num
+            }
+        }
+        
+        return number
+    }
+    
+    /// https://leetcode.com/problems/word-pattern/
+    func wordPattern(_ pattern: String, _ s: String) -> Bool {
+        var patternArr = pattern
+            .split(separator: "")
+            .compactMap({ String($0) })
+        
+        var words = s
+            .components(separatedBy: " ")
+        
+        var map = [String: String]()
+        var valueToKeyMap = [String: String]()
+        
+        guard patternArr.count == words.count else {
+            return false
+        }
+        var count = max(patternArr.count, words.count)
+        for it in 0..<count {
+            let char = it < patternArr.count ? patternArr[it] : ""
+            let word = it < words.count ? words[it] : ""
+            
+            /// Check value to key map collide
+            if let value = valueToKeyMap[word] {
+                if value != char {
+                    return false
+                }
+            } else {
+                valueToKeyMap[word] = char
+            }
+            
+            /// Check key to value map collide
+            if let value = map[char] {
+                if value != word {
+                    return false
+                }
+            } else {
+                map[char] = word
             }
         }
         
         return true
+    }
+    
+    /// tidle --> paper
+    /// https://leetcode.com/problems/isomorphic-strings/?envType=study-plan-v2&envId=top-interview-150
+    func isIsomorphic(_ s: String, _ t: String) -> Bool {
+        /// Only when t size is less than or equal to s size
+        guard t.count <= s.count else {
+            return false
+        }
+        
+        let sArr = s.split(separator: "").map({ String($0) })
+        let tArr = t.split(separator: "").map({ String($0) })
+        
+        var sDic = [String: String]()
+        var tDic = [String: String]()
+        
+        var it = 0
+        for it in 0..<sArr.count {
+            let sChar = sArr[it]
+            let tChar = tArr[it]
+            
+            if let tValue = sDic[sChar] {
+                if tValue != tChar {
+                    return false
+                }
+            } else {
+                sDic[sChar] = tChar
+            }
+            
+            if let sValue = tDic[tChar] {
+                if sValue != sChar {
+                    return false
+                }
+            } else {
+                tDic[tChar] = sChar
+            }
+        }
+        
+        return true
+    }
+    
+    
+    func isHappy(_ n: Int) -> Bool {
+        var number = n
+        let map = [0: 0, 1: 1, 2: 4, 3: 9, 4: 16, 5: 25, 6: 36, 7: 49, 8: 64, 9: 81]
+        while(number != 1) {
+            if number == 2 || number == 3 || number == 4 ||  number == 5 || number == 6 ||  number == 8 || number == 9 {
+                return false
+            }
+            
+            if number == 7 {
+                return true
+            }
+            
+            var result = 0
+            while(number > 0) {
+                let rem = number % 10
+                let restNum = number/10
+                
+                result += map[rem]!
+                number = restNum
+            }
+            
+            number = result
+        }
+        
+        return number == 1
     }
     
     /// https://leetcode.com/problems/ransom-note/?envType=study-plan-v2&envId=top-interview-150

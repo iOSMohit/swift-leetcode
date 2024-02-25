@@ -8,22 +8,23 @@
 import Foundation
 
 extension Solution {
+    
+//    func solve() {
+//        let urlString = "https://www.lowes.com/l/your-recommendations?eventId=some-event-id&divId=based-on-your-purchase"
+//        if let url = URL(string: urlString),
+//           let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+//            let pathComp = components.path.components(separatedBy: "/").last
+//            print(pathComp)
+//        }
+//        
+//        
+//        
+//        //        print(maxArea([1,8,6,2,5,4,8,3,7]))
+//    }
+    
+    
     /// [[1,0,0],[1,1,0],[1,1,0]]
     /// https://leetcode.com/problems/shortest-path-in-binary-matrix
-    
-    
-    public class TreeNode {
-        public var val: Int
-        public var left: TreeNode?
-        public var right: TreeNode?
-        public init() { self.val = 0; self.left = nil; self.right = nil; }
-        public init(_ val: Int) { self.val = val; self.left = nil; self.right = nil; }
-        public init(_ val: Int, _ left: TreeNode?, _ right: TreeNode?) {
-            self.val = val
-            self.left = left
-            self.right = right
-        }
-    }
     
     func shortestPathBinaryMatrix(_ grid: [[Int]]) -> Int {
         //        var queue = Queue<String>()
@@ -174,5 +175,25 @@ extension Solution {
         }
         
         return neighbors
+    }
+    
+    func isPalindrome(_ x: Int) -> Bool {
+        if x < 0 {
+            return false
+        }
+        
+        var str = Array("\(x)")
+        var start = 0
+        var end = str.count - 1
+        while(start <= end) {
+            guard str[start] == str[end] else {
+                return false
+            }
+            
+            start += 1
+            end -= 1
+        }
+        
+        return true
     }
 }
