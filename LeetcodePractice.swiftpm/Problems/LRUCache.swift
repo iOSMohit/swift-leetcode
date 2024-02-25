@@ -57,7 +57,7 @@ final class LRUCache {
 
 
 extension Solution {
-    func printLRU() {
+//    func printLRU() {
         
 //        var ll = DoublyLinkedList()
 //        ll.insertAtFront(node: DoubleListNode(val: 1), value: 100)
@@ -90,7 +90,7 @@ extension Solution {
 //        print(ll.deleteLast())
         
         
-        let lru = LRUCache(1)
+//        let lru = LRUCache(1)
         
 //        lru.put(1, 1)
 //        lru.put(2, 2)
@@ -108,11 +108,11 @@ extension Solution {
 //        print(lru.get(4))
         
 //        [[1],[2,1],[2],[3,2],[2],[3]]
-        lru.put(2, 1)
-        print(lru.get(2))
-        lru.put(3, 2)
-        print(lru.get(2))
-        print(lru.get(3))
+//        lru.put(2, 1)
+//        print(lru.get(2))
+//        lru.put(3, 2)
+//        print(lru.get(2))
+//        print(lru.get(3))
         
         
 //        [[2],[2],[2,6],[1],[1,5],[1,2],[1],[2]]
@@ -134,5 +134,5 @@ extension Solution {
 //        lru.put(1, 1)
 //        lru.put(4, 1)
 //        print(lru.get(2))
-    }
+//    }
 }

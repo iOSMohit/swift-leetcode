@@ -9,16 +9,37 @@ import Foundation
 
 extension Solution {
     func solve() {
-        let list1 = ListNode(1)
-        list1.next = ListNode(2)
-        list1.next?.next = ListNode(4)
+//        let list1 = ListNode(1)
+//        list1.next = ListNode(2)
+//        list1.next?.next = ListNode(4)
+//        
+//        let list2 = ListNode(1)
+//        list2.next = ListNode(3)
+//        list2.next?.next = ListNode(4)
+//        
+//        let newHead = mergeTwoLists(list1, list2)
+//        print(newHead?.val)
         
-        let list2 = ListNode(1)
-        list2.next = ListNode(3)
-        list2.next?.next = ListNode(4)
+        /// Duplicate remove from LinkedList
+//        var head = ListNode(1)
+//        head.next = ListNode(2)
+//        head.next?.next = ListNode(2)
+//        head.next?.next?.next = ListNode(3)
+//        head.next?.next?.next?.next = ListNode(3)
+//        head.next?.next?.next?.next?.next = ListNode(4)
+//        head.next?.next?.next?.next?.next?.next = ListNode(4)
+//        head.next?.next?.next?.next?.next?.next?.next = ListNode(5)
         
-        let newHead = mergeTwoLists(list1, list2)
-        print(newHead?.val)
+//        var head = ListNode(1)
+//        head.next = ListNode(2)
+//        head.next?.next = ListNode(2)
+//        head.next?.next?.next = ListNode(3)
+//        head.next?.next?.next?.next = ListNode(4)
+//        head.next?.next?.next?.next?.next = ListNode(4)
+//        head.next?.next?.next?.next?.next?.next = ListNode(5)
+//        head.next?.next?.next?.next?.next?.next?.next = ListNode(5)
+        
+//        printList(deleteDuplicates(head))
     }
     
     func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
@@ -138,15 +159,56 @@ extension Solution {
         
         return false
     }
+    
+    /// https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/?envType=study-plan-v2&envId=top-interview-150
+    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
+        var fHead = head
+        var sHead = head
+        
+        var uHead: ListNode?
+        var uHeadTrail: ListNode?
+        
+        while(sHead != nil) {
+            var count = 0
+            while(sHead != nil) {
+                if fHead?.val == sHead?.val {
+                    count += 1
+                } else {
+                    break
+                }
+                
+                sHead = sHead?.next
+            }
+            
+            if count == 1 {
+                if uHead == nil {
+                    uHead = fHead
+                    uHeadTrail = fHead
+                    fHead = fHead?.next
+                    uHead?.next = nil
+                } else {
+                    uHeadTrail?.next = fHead
+                    uHeadTrail = uHeadTrail?.next
+                    fHead = fHead?.next
+                    uHeadTrail?.next = nil
+                }
+            } else {
+                fHead = sHead
+            }
+//            print("Unique head is \(uHead?.val). fHead is \(fHead?.val), count is \(count)")
+        }
+        
+        return uHead
+    }
 }
 
-//extension Solution {
-//    func printList(_ head: ListNode?) {
-//        var tempHead: ListNode? = ListNode(head?.val ?? 0, head?.next)
-//        while(tempHead != nil) {
-//            print("\(tempHead?.val ?? 0)", separator: "")
-//            tempHead = tempHead?.next
-//        }
-//        print("")
-//    }
-//}
+extension Solution {
+    func printList(_ head: ListNode?) {
+        var tempHead: ListNode? = ListNode(head?.val ?? 0, head?.next)
+        while(tempHead != nil) {
+            print("\(tempHead?.val ?? 0)", separator: "", terminator: " ")
+            tempHead = tempHead?.next
+        }
+        print("")
+    }
+}

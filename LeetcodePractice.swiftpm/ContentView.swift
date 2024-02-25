@@ -6,8 +6,8 @@ struct ContentView: View {
     var body: some View {
         Button("Reload") {
 //            print("Solving now!!")
-//            solution.solve()
-            solution.printLRU()
+            solution.solve()
+//            solution.printLRU()
         }
     }
 }
