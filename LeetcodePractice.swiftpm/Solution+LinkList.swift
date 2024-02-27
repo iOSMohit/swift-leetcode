@@ -8,7 +8,7 @@
 import Foundation
 
 extension Solution {
-    func solve() {
+//    func solve() {
 //        let list1 = ListNode(1)
 //        list1.next = ListNode(2)
 //        list1.next?.next = ListNode(4)
@@ -76,14 +76,14 @@ extension Solution {
         
         /// TEST 5
         /// [1,4,3,2,5,2] OP - [1,2,2,4,3,5]
-        var head = ListNode(1)
-        head.next = ListNode(4)
-        head.next?.next = ListNode(3)
-        head.next?.next?.next = ListNode(2)
-        head.next?.next?.next?.next = ListNode(5)
-        head.next?.next?.next?.next?.next = ListNode(2)
-        printList(partition(head, 3))
-    }
+//        var head = ListNode(1)
+//        head.next = ListNode(4)
+//        head.next?.next = ListNode(3)
+//        head.next?.next?.next = ListNode(2)
+//        head.next?.next?.next?.next = ListNode(5)
+//        head.next?.next?.next?.next?.next = ListNode(2)
+//        printList(partition(head, 3))
+//    }
     
     func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
         if list1 == nil {
