@@ -40,6 +40,49 @@ extension Solution {
 //        head.next?.next?.next?.next?.next?.next?.next = ListNode(5)
         
 //        printList(deleteDuplicates(head))
+        
+        
+        /// PARTITION
+        /// Test 1
+//        var head = ListNode(1)
+//        head.next = ListNode(4)
+//        head.next?.next = ListNode(3)
+//        head.next?.next?.next = ListNode(0)
+//        head.next?.next?.next?.next = ListNode(2)
+//        head.next?.next?.next?.next?.next = ListNode(5)
+//        head.next?.next?.next?.next?.next?.next = ListNode(2)
+//        printList(partition(head, 3))
+        
+        /// Test 2
+//        var head = ListNode(2)
+//        head.next = ListNode(1)
+//        printList(partition(head, 2))
+        
+        /// TEST 3
+//        [4,3,2,5,2] OP - [2,2,4,3,5]
+//        var head = ListNode(4)
+//        head.next = ListNode(3)
+//        head.next?.next = ListNode(2)
+//        head.next?.next?.next = ListNode(5)
+//        head.next?.next?.next?.next = ListNode(2)
+//        
+//        printList(partition(head, 3))
+        
+        /// TEST 4
+//        var head = ListNode(1)
+//        head.next = ListNode(2)
+//        head.next?.next = ListNode(3)
+//        printList(partition(head, 4))
+        
+        /// TEST 5
+        /// [1,4,3,2,5,2] OP - [1,2,2,4,3,5]
+        var head = ListNode(1)
+        head.next = ListNode(4)
+        head.next?.next = ListNode(3)
+        head.next?.next?.next = ListNode(2)
+        head.next?.next?.next?.next = ListNode(5)
+        head.next?.next?.next?.next?.next = ListNode(2)
+        printList(partition(head, 3))
     }
     
     func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
@@ -195,10 +238,59 @@ extension Solution {
             } else {
                 fHead = sHead
             }
-//            print("Unique head is \(uHead?.val). fHead is \(fHead?.val), count is \(count)")
         }
         
         return uHead
+    }
+    
+    /// https://leetcode.com/problems/partition-list/?envType=study-plan-v2&envId=top-interview-150
+    func partition(_ head: ListNode?, _ x: Int) -> ListNode? {
+        var oHead = head
+        var pHead = head
+        var sHead = head
+        var sHeadNext = head?.next
+        
+        while(sHeadNext != nil) {
+            guard let sHeadNextPt = sHeadNext else {
+                break
+            }
+            
+            /// If node value is less than x
+            if sHeadNextPt.val < x {
+                let foundNode = sHeadNextPt
+                
+                /// Reseting prev node to next node of 'found node'
+                sHead?.next = sHeadNextPt.next
+                
+                sHeadNext = sHeadNextPt.next /// Moving sHeadNxt to next node
+                
+                /// Set next node of node to be moved to ni
+                foundNode.next = nil
+                
+                /// Check if head is greater than or equal to 'x'
+                if var oHeadPt = oHead, oHeadPt.val >= x {
+                    foundNode.next = oHeadPt
+                    oHead = foundNode
+                    pHead = oHead
+                } else {
+                    /// Move it to correct place
+                    let pNextNode = pHead?.next
+                    foundNode.next = pNextNode
+                    
+                    pHead?.next = foundNode
+                    if pHead === sHead {
+                        sHead = sHead?.next
+                    }
+                    pHead = pHead?.next
+                }
+                
+                continue
+            }
+            sHead = sHead?.next
+            sHeadNext = sHeadNext?.next
+        }
+        
+        return oHead
     }
 }
 
